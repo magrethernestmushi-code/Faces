@@ -60,6 +60,16 @@ a:hover{color:var(--violet);}
 .footer small{font-size:12px;color:var(--muted-2);}
 .footer .nav-links{gap:24px;}
 
+.credit-bar{
+  text-align:center;
+  padding:16px 20px 28px;
+  font-size:11px;
+  color:rgba(255,255,255,0.3);
+  letter-spacing:0.02em;
+}
+.credit-bar a{color:rgba(255,255,255,0.45);font-weight:600;}
+.credit-bar a:hover{color:var(--gold);}
+
 /* Layout helpers */
 .wrap{max-width:1280px;margin:0 auto;padding-left:48px;padding-right:48px;}
 .wrap-narrow{max-width:720px;margin:0 auto;padding-left:48px;padding-right:48px;}
