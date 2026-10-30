@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout — FACES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="nav">
+  <a class="nav-logo" href="index.html"><img src="assets/faces-wordmark.jpg" alt="FACES"></a>
+  <div style="font-size:12px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.5);">Secure Checkout (preview)</div>
+  <a class="nav-link" href="marketplace.html">← Back to Marketplace</a>
+</div>
+
+<div class="wrap-narrow" style="padding-top:70px;padding-bottom:30px;text-align:center;">
+  <div class="eyebrow gold" style="text-align:center;">PAYMENT</div>
+  <h1 class="display" style="font-size:clamp(30px,5vw,46px);line-height:1;margin:0;">CHOOSE HOW YOU PAY</h1>
+</div>
+
+<div class="wrap-narrow" style="padding-top:30px;padding-bottom:140px;">
+
+  <div style="background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:24px 28px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;">
+    <div><div style="font-weight:700;font-size:15px;">Many Faces Hoodie</div><div style="font-size:13px;color:var(--muted);">Size M · Qty 1</div></div>
+    <div style="font-weight:800;color:var(--gold);">TSh 85,000</div>
+  </div>
+
+  <div id="methods" style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;"></div>
+
+  <div id="dynamic-fields" style="margin-bottom:28px;"></div>
+
+  <button id="pay-btn" style="width:100%;background:var(--gold);color:var(--ink);font-weight:800;font-size:14px;letter-spacing:0.06em;text-transform:uppercase;padding:18px;border-radius:2px;border:none;cursor:pointer;">Pay TSh 85,000</button>
+
+  <div style="margin-top:20px;padding:16px 18px;border:1px solid rgba(255,215,0,0.25);background:rgba(255,215,0,0.06);border-radius:4px;font-size:12px;color:rgba(255,255,255,0.65);line-height:1.6;">
+    This checkout is a visual preview only — no real payment is processed here. Going live needs an M-Pesa and Airtel Money merchant integration and a card processor, configured and verified on the backend before this button does anything real.
+  </div>
+</div>
+
+<div class="footer">
+  <small>© FACES™ — site concept for internal review</small>
+  <div class="nav-links">
+    <a class="nav-link" href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+    <a class="nav-link" href="index.html">Home</a>
+  </div>
+</div>
+
+<script>
+// Edit the "methods" array to add or rename payment options.
+var METHODS = [
+  {id:'mpesa', name:'M-Pesa', desc:'Pay via M-Pesa mobile money', initials:'MP', iconBg:'#FFD700', iconFg:'#0a0a0a', needsPhone:true},
+  {id:'airtel', name:'Airtel Money', desc:'Pay via Airtel Money', initials:'AM', iconBg:'#9D00FF', iconFg:'#ffffff', needsPhone:true},
+  {id:'card', name:'Debit / Credit Card', desc:'Visa, Mastercard', initials:'CC', iconBg:'#ffffff', iconFg:'#0a0a0a', needsPhone:false}
+];
+var active = 'mpesa';
+
+function renderMethods(){
+  var wrap = document.getElementById('methods');
+  wrap.innerHTML = METHODS.map(function(m){
+    var isActive = m.id === active;
+    return '<button data-id="'+m.id+'" style="display:flex;align-items:center;gap:16px;text-align:left;padding:18px 20px;border-radius:4px;cursor:pointer;border:1px solid '+(isActive?'#FFD700':'rgba(255,255,255,0.1)')+';background:'+(isActive?'rgba(255,215,0,0.06)':'#111')+';width:100%;">' +
+      '<div style="width:40px;height:40px;border-radius:50%;background:'+m.iconBg+';display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span class="display" style="font-size:13px;color:'+m.iconFg+';">'+m.initials+'</span></div>' +
+      '<div style="flex:1;"><div style="font-weight:700;font-size:14px;color:#fff;">'+m.name+'</div><div style="font-size:12px;color:rgba(255,255,255,0.5);">'+m.desc+'</div></div>' +
+      '<div style="width:18px;height:18px;border-radius:50%;border:2px solid '+(isActive?'#FFD700':'rgba(255,255,255,0.3)')+';background:'+(isActive?'#FFD700':'transparent')+';"></div>' +
+    '</button>';
+  }).join('');
+  Array.prototype.forEach.call(wrap.querySelectorAll('button'), function(btn){
+    btn.onclick = function(){ active = btn.getAttribute('data-id'); renderMethods(); renderFields(); };
+  });
+}
+
+function renderFields(){
+  var def = METHODS.find(function(m){ return m.id === active; });
+  var field = document.getElementById('dynamic-fields');
+  if (def.needsPhone) {
+    field.innerHTML = '<label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:8px;">'+def.name+' phone number</label>' +
+      '<input type="tel" placeholder="e.g. 07XX XXX XXX" style="width:100%;box-sizing:border-box;background:transparent;border:1px solid rgba(255,255,255,0.25);color:#fff;padding:14px 16px;border-radius:2px;font-size:14px;">';
+  } else {
+    field.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">' +
+      '<div style="grid-column:1/-1;"><label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:8px;">Card number</label><input type="text" placeholder="•••• •••• •••• ••••" style="width:100%;box-sizing:border-box;background:transparent;border:1px solid rgba(255,255,255,0.25);color:#fff;padding:14px 16px;border-radius:2px;font-size:14px;"></div>' +
+      '<div><label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:8px;">Expiry</label><input type="text" placeholder="MM/YY" style="width:100%;box-sizing:border-box;background:transparent;border:1px solid rgba(255,255,255,0.25);color:#fff;padding:14px 16px;border-radius:2px;font-size:14px;"></div>' +
+      '<div><label style="display:block;font-size:12px;font-weight:700;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:8px;">CVV</label><input type="text" placeholder="•••" style="width:100%;box-sizing:border-box;background:transparent;border:1px solid rgba(255,255,255,0.25);color:#fff;padding:14px 16px;border-radius:2px;font-size:14px;"></div>' +
+    '</div>';
+  }
+}
+
+document.getElementById('pay-btn').onclick = function(){
+  alert('Preview only — no payment has been made. Connect a real M-Pesa / Airtel Money / card provider to enable checkout.');
+};
+
+renderMethods();
+renderFields();
+</script>
+</body>
+</html>

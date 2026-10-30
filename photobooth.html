@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photobooth — FACES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="nav">
+  <a class="nav-logo" href="index.html"><img src="assets/faces-wordmark.jpg" alt="FACES"></a>
+  <div class="nav-links">
+    <a class="nav-link" href="marketplace.html">Marketplace</a>
+    <a class="nav-link" href="sneaker-news.html">Sneaker News</a>
+    <a class="nav-link" href="blog.html">Blog</a>
+    <a class="nav-link" href="team.html">The Face Behind FACES</a>
+    <a class="nav-link active" href="photobooth.html">Photobooth</a>
+    <a class="nav-link" href="about.html">About</a>
+  </div>
+  <a class="btn-cta" href="marketplace.html">Find Your Expression</a>
+</div>
+
+<div class="wrap-narrow" style="padding-top:110px;padding-bottom:50px;text-align:center;max-width:900px;">
+  <div class="eyebrow gold" style="text-align:center;">COMMUNITY</div>
+  <h1 class="display" style="font-size:clamp(34px,6vw,60px);line-height:1.05;margin:0;">PHOTOBOOTH</h1>
+  <p style="color:var(--muted);font-size:15px;max-width:520px;margin:22px auto 0;">Real faces, wearing real FACES. Tag us or submit your own — shown here with permission, never without it.</p>
+</div>
+
+<div class="wrap" style="max-width:1100px;padding-top:30px;display:flex;justify-content:center;">
+  <button onclick="alert('Preview only — hook this up to a real submission form / inbox when ready.')" style="background:#9D00FF;color:#fff;font-weight:800;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;padding:16px 32px;border-radius:2px;border:none;cursor:pointer;">Submit Your Face</button>
+</div>
+
+<div class="wrap" style="max-width:1100px;padding-top:50px;padding-bottom:140px;">
+  <div id="photo-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;"></div>
+  <div class="note">Shown here as placeholder tiles — real community photos replace these once submissions and permissions come in. Tap a tile to like it.</div>
+</div>
+
+<div class="footer">
+  <small>© FACES™ — site concept for internal review</small>
+  <div class="nav-links">
+    <a class="nav-link" href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+    <a class="nav-link" href="https://youtube.com" target="_blank" rel="noopener">YouTube</a>
+    <a class="nav-link" href="index.html">Home</a>
+  </div>
+</div>
+
+<script>
+// Replace these with real submissions (handle, likes, photo) once they come in.
+var PHOTOS = [
+  {handle:'@amani.wears', likes:128, swatch:'linear-gradient(135deg,#2a1a3a,#0a0a0a)', liked:false},
+  {handle:'@dar_drip', likes:94, swatch:'linear-gradient(135deg,#2a2206,#0a0a0a)', liked:false},
+  {handle:'@faces.fan', likes:211, swatch:'linear-gradient(135deg,#1a1a1a,#0a0a0a)', liked:false},
+  {handle:'@zuri.k', likes:67, swatch:'linear-gradient(135deg,#2a1a3a,#111)', liked:false},
+  {handle:'@thecrownwears', likes:153, swatch:'linear-gradient(135deg,#1a1a1a,#2a2206)', liked:false},
+  {handle:'@mwana.wa.dsm', likes:48, swatch:'linear-gradient(135deg,#111,#0a0a0a)', liked:false},
+  {handle:'@globe.trotter', likes:176, swatch:'linear-gradient(135deg,#2a1a3a,#0a0a0a)', liked:false},
+  {handle:'@rebel.rae', likes:89, swatch:'linear-gradient(135deg,#1a1a1a,#0a0a0a)', liked:false}
+];
+
+function renderPhotos(){
+  var grid = document.getElementById('photo-grid');
+  grid.innerHTML = PHOTOS.map(function(p, i){
+    var likes = p.likes + (p.liked ? 1 : 0);
+    return '<button data-i="'+i+'" style="position:relative;aspect-ratio:1;border-radius:4px;overflow:hidden;cursor:pointer;border:none;padding:0;background:'+p.swatch+';display:flex;align-items:flex-end;width:100%;">' +
+      '<div style="width:100%;padding:14px;background:linear-gradient(to top,rgba(0,0,0,0.75),transparent);display:flex;justify-content:space-between;align-items:center;">' +
+        '<span style="font-size:12px;font-weight:600;color:#fff;">'+p.handle+'</span>' +
+        '<span style="font-size:13px;color:'+(p.liked?'#9D00FF':'rgba(255,255,255,0.7)')+';">'+(p.liked?'♥':'♡')+' '+likes+'</span>' +
+      '</div>' +
+    '</button>';
+  }).join('');
+  Array.prototype.forEach.call(grid.querySelectorAll('button'), function(btn){
+    btn.onclick = function(){
+      var i = parseInt(btn.getAttribute('data-i'), 10);
+      PHOTOS[i].liked = !PHOTOS[i].liked;
+      renderPhotos();
+    };
+  });
+}
+renderPhotos();
+</script>
+</body>
+</html>
